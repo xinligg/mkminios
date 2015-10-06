@@ -1,0 +1,8 @@
+#!/usr/bin/env perl
+# ldd-helper - ldd output extractor 
+
+for (`ldd "$ARGV[0]"`) {
+
+print $1, "\n" if /(\/.*) \(/;
+
+}

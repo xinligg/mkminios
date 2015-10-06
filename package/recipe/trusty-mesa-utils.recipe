@@ -1,0 +1,22 @@
+# recipe file
+
+[name]
+mesa-utils
+
+[package]
+mesa-utils
+
+[action]
+
+[binary]
+/usr/bin/glxdemo
+/usr/bin/glxheads
+/usr/bin/glxgears
+/usr/bin/glxinfo
+
+[data]
+
+[config]
+
+[overwrite]
+

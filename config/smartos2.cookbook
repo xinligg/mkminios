@@ -1,0 +1,114 @@
+# mkminios project config
+
+[config]
+# short project description
+MKMINIOS_NAME="StarOS wheezy image"
+# you can skip the package manager handling by setting this to `skip'
+#MKMINIOS_PKGMGR="apt-get install -y"
+MKMINIOS_PKGMGR="skip"
+# set to `true' if you want to include host /dev nodes
+MKMINIOS_HOST_DEV="false"
+
+# specified the Linux kernel version to be used
+MKMINIOS_KERNEL="3.10.17"
+MKMINIOS_KERNEL_IMAGE="deploy/vmlinuz-3.10.17"
+MKMINIOS_MOD_PATH="/lib/modules/3.10.17"
+
+[module]
+# kernel modules to be included into rootfs
+acpi-cpufreq mperf deflate authenc cbc michael_mic des_generic 
+
+snd-usbmidi-lib snd-usb-audio snd-usb-usx2y snd-usb-caiaq ac97_bus snd-pcm snd-page-alloc snd-timer snd snd-pcm-oss snd-mixer-oss snd-seq-midi-event snd-seq-device snd-seq snd-seq-midi snd-hwdep snd-rawmidi soundcore snd-hda-codec-analog snd-hda-codec-cirrus snd-hda-codec-nvhdmi snd-hda-codec-ca0110 snd-hda-codec-si3054 snd-hda-codec-atihdmi snd-hda-intel snd-hda-codec-realtek snd-hda-codec-via snd-hda-codec-idt snd-hda-codec snd-hda-codec-cmedia snd-hda-codec-intelhdmi snd-hda-codec-conexant snd-intel8x0 snd-ac97-codec snd-hdspm snd-hdsp snd-ens1371 
+
+xfrm_ipcomp xfrm_user inet_diag xfrm4_mode_transport xfrm4_tunnel tcp_bic tcp_diag ipcomp xfrm4_mode_beet tunnel4 esp4 xfrm4_mode_tunnel ah4 sco l2cap rfcomm hidp bnep bluetooth mac80211 lib80211_crypt_ccmp lib80211_crypt_tkip lib80211_crypt_wep cfg80211 chnl_net caif_socket caif af_key freq_table intel-rng rng-core intel-agp ati-agp agpgart nvram ftdi-elan usb-storage wusbcore cdc-wdm uhci-hcd ehci-hcd ohci-hcd whci-hcd usbcore eeprom_93cx6 tifm_core whc-rc whci uwb umc rc-tbs-nec rc-behold-columbus rc-imon-mce rc-avermedia-m733a-rm-k6 rc-kworld-plus-tv-analog rc-asus-pc39 rc-nec-terratec-cinergy-xs rc-videomate-s350 rc-ati-tv-wonder-hd-600 rc-dntv-live-dvb-t rc-terratec-cinergy-xs rc-pinnacle-pctv-hd rc-fusionhdtv-mce rc-pixelview rc-dm1105-nec rc-empty rc-cinergy-1400 rc-dntv-live-dvbt-pro rc-iodata-bctv7e rc-avermedia-a16d rc-flydvb rc-winfast-usbii-deluxe rc-gadmei-rm008z rc-avermedia rc-eztv rc-avermedia-m135a rc-tt-1500 rc-pixelview-mk12 rc-msi-tvanywhere-plus rc-tevii-nec rc-evga-indtube rc-encore-enltv rc-flyvideo rc-pinnacle-grey rc-avermedia-dvbt rc-pctv-sedna rc-genius-tvgo-a11mce rc-cinergy rc-em-terratec rc-videomate-tv-pvr rc-apac-viewcomp rc-behold rc-encore-enltv-fm53 rc-norwood rc-adstech-dvb-t-pci rc-avertv-303 rc-winfast rc-imon-pad rc-proteus-2309 rc-pixelview-new rc-budget-ci-old rc-rc5-hauppauge-new rc-encore-enltv2 rc-pv951 rc-powercolor-real-angel rc-msi-tvanywhere rc-hauppauge-new rc-nebula rc-pinnacle-color rc-purpletv rc-avermedia-cardbus rc-rc5-tv rc-gotview7135 rc-kworld-315u rc-real-audio-220-32-keys rc-manli rc-kaiomy rc-npgtech saa7146_vv saa7146 gspca_sq905 gspca_sq905c gspca_gl860 gspca_mr97310a gspca_sn9c20x gspca_jeilinj gspca_main videobuf-vmalloc sn9c102 mxb tda9840 zr364xx s2255drv stkwebcam zc0301 et61x251 saa7115 tea6415c videobuf-core videobuf-dma-sg uvcvideo tuner tea6420 scsi_wait_scan btmrvl hci_vhci hci_uart ath3k btmrvl_sdio bpa10x bfusb bcm203x btusb btsdio ppp_synctty e1000e igb macvlan e1000 pppoe sis190 dm9601 mcs7830 zaurus plusb cdc_ether cdc_eem usbnet ipheth rndis_host pegasus net1080 kaweth catc gl620a smsc95xx asix cdc_subset rtl8150 sierra_net slhc atl1c bnx2 ppp_deflate r8169 ppp_mppe atl2 atl1 ath9k_htc ath9k_hw ath9k_common ath9k ath ar9170usb ath5k zd1211rw rt73usb rt2x00usb rt2500pci rt61pci rt2500usb rt2x00lib rt2x00pci rt2400pci at76c50x-usb rndis_wlan ipw2200 ipw2100 libipw rtl8180 rtl8187 libertas usb8xxx libertas_sdio b43 p54common p54usb p54pci zd1201 iwlagn iwlcore iwl3945 atl1e tun pcnet32 sis900 8139cp 8139too caif_serial ppp_async e100 pppox icplus smsc libphy realtek vitesse mdio-bitbang cicada davicom marvell lxt qsemi broadcom micrel tg3 sky2 ppp_generic bsd_comp synaptics_i2c vsxxxaa sermouse tca6416-keypad input-polldev 
+
+drm_kms_helper radeon ch7006 i830 nouveau i810 i915 ttm drm r128 sdhci tifm_sd wbsd sdhci-pci mmc_core mmc_block sdio_uart brd cryptoloop generic_bl adp8860_bl fan power_meter video hid hid-microsoft hid-a4tech hid-logitech hid-kye hid-monterey hid-chicony hid-cypress hid-apple usbhid hid-belkin hid-cherry hid-kensington hid-ezkey pci_hotplug pciehp shpchp tmp102 hwmon tmp421 pcmcia_rsrc pcmcia_core yenta_socket ssb cuse autofs4 quota_v2 quota_v1 quota_tree udf hfsplus autofs 
+
+nls_iso8859-15 nls_cp852 nls_cp857 nls_iso8859-7 nls_cp866 nls_iso8859-13 nls_cp932 nls_cp437 nls_cp861 nls_cp950 nls_cp874 nls_iso8859-5 nls_cp865 nls_cp862 nls_iso8859-3 nls_iso8859-2 nls_iso8859-1 nls_koi8-ru nls_iso8859-6 nls_cp737 nls_utf8 nls_cp1250 nls_cp869 nls_cp863 nls_iso8859-14 nls_cp850 nls_koi8-u nls_cp860 nls_ascii nls_cp775 nls_euc-jp nls_iso8859-4 nls_cp936 nls_iso8859-9 nls_koi8-r nls_cp1251 nls_cp949 nls_cp1255 nls_cp855 nls_cp864 ntfs crc16 zlib_deflate crc-ccitt crc-itu-t 
+
+[recipe]
+# packages and files to be included into rootfs
+initramfs
+wheezy-libc6
+wheezy-core-utils
+wheezy-x11
+wheezy-xorg
+gtk2
+ubuntu-sound
+#ubuntu-gnome-power-manager
+ubuntu-network
+#maverick-wireless-tools
+#ubuntu-artwork
+wheezy-artwork
+#maverick-pulseaudio
+# change this to ubuntu-plate-chrome if you want chrome
+#ubuntu-plate-tableware
+#ubuntu-plate-firefox
+#ubuntu-plate-chrome
+#ubuntu-plate-midori
+#ubuntu-pcmanfm
+#lucid-pcmanfm2
+dbus
+wheezy-cjkfont
+
+#ubuntu-apps-office
+#ubuntu-apps-gcalctool
+
+#python_all
+#python-2.6
+ubuntu-init
+wheezy-staros-openbox
+#ubuntu-lxpanel
+#ubuntu-starosdesktop
+#ubuntu-networkmanager
+#ubuntu-bluetooth
+#ubuntu-wicd
+ubuntu-devicekit
+#ubuntu-firefox
+ubuntu-gpicview
+apps-leafpad
+#firefox-3.6.17
+#olderpc-desktop
+#ubuntu-ibus-pinyin
+#ubuntu-scim
+#apps-xfbdev
+#apps-lxterminal
+apps-xvesa
+forfix
+
+[opt]
+#ubuntu-media
+#lucid-scim-chewing
+#ubuntu-apps-office
+#ubuntu-seahorse
+
+[prepare]
+# commands executed before building
+#if [ ! -e /lib/modules/2.6.35 ]; then tar xzf skeleton/archive/modules-2.6.35.tgz -C /;
+#fi;
+
+[action]
+#tar xzf kernel/module/wl-module.tar.gz -C $MKMINIOS_TARGET/lib/modules/2.6.30.5/ ;
+#rm -rf $MKMINIOS_TARGET/lib/udev/devices/*
+
+[overwrite]
+# files to be overwritten
+/etc/passwd
+/etc/group
+
+[obfuscate]
+# NOTE: compressing perl and bash saves about 0.1MB but compressed files are executed slower
+# files to be compressed with `upx' or `shc'
+#/usr/local/bin/Xvesa
+#/usr/bin/perl
+#/bin/bash
+#/bin/busybox
+#/bin/mount
+#/opt/apps/usr/bin/mplayer
+#/usr/share/firefox/firefox-bin
+
+[remove]
+# files to be removed after rootfs extraction
+
+[image]
+gz iso

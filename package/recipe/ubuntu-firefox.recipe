@@ -1,0 +1,43 @@
+# recipe file
+
+[name]
+firefox-3.6.10
+
+[package]
+
+[action]
+
+# download firefox
+if [ ! -e skeleton/archive/firefox-3.6.10.tar.bz2 ]; then wget http://releases.mozilla.org/pub/mozilla.org/firefox/releases/3.6.10/linux-i686/zh-CN/firefox-3.6.10.tar.bz2 -P skeleton/archive/; fi; 
+tar jxf skeleton/archive/firefox-3.6.10.tar.bz2 -C $MKMINIOS_TARGET/usr/share/;
+
+# FIXME: remove firefox updater and components
+rm -f $MKMINIOS_TARGET/usr/share/firefox/updater;
+rm -f $MKMINIOS_TARGET/usr/share/firefox/crashreporter;
+rm -f $MKMINIOS_TARGET/usr/share/firefox/components/libmozgnome.so;
+rm -f $MKMINIOS_TARGET/usr/share/firefox/components/libnkgnomevfs.so;
+
+[binary]
+
+#/usr/bin/mozplugger-controller
+#/usr/bin/mozplugger-helper
+#/usr/bin/mozplugger-linker
+#/usr/bin/m4
+
+[data]
+
+#/usr/lib/mozilla/plugins/mozplugger.so
+
+[config]
+
+
+#/etc/pulse
+/etc/fonts
+/root/.mozilla
+
+#/etc/gtk-2.0
+
+#/usr/share/pixmaps
+
+[overwrite]
+/usr/bin/firefox

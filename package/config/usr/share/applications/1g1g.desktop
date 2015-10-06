@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Name=Music
+Name[zh_CN]=在线音乐
+Comment=Web Music Utility
+GenericName=Music
+Exec=tableware http://www.1g1g.com/
+Type=WebApp
+Icon=music
+URL=http://www.1g1g.com/

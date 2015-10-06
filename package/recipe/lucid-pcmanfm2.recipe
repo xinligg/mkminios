@@ -1,0 +1,65 @@
+# recipe file
+[name]
+pcmanfm2
+
+[package]
+pcmanfm2
+libmenu-cache1
+lxmenu-data
+
+[action]
+add-apt-repository ppa:lubuntu-desktop;
+
+[binary]
+/usr/bin/pcmanfm
+/usr/bin/pcmanfm2
+
+[data]
+/usr/share/pcmanfm
+
+/usr/lib/libmenu-cache/libexec/
+/etc/xdg/menus/lxde-applications.menu
+/usr/share/desktop-directories/
+
+# MIME info
+/usr/share/mime
+
+/usr/lib/gamin
+/usr/lib/libgamin-1.so.0
+/usr/lib/libgamin-1.so.0.1.10
+
+/usr/share/icons/hicolor/
+/usr/share/icons/gnome/16x16/mimetypes
+/usr/share/icons/gnome/16x16/places
+/usr/share/icons/gnome/32x32/mimetypes
+/usr/share/icons/gnome/32x32/places
+
+#/usr/share/applications/pcmanfm.desktop
+
+/usr/lib/dbus-1.0/
+
+/usr/lib/policykit-1/
+/usr/lib/policykit-1-gnome/
+/usr/lib/polkit-1/
+/etc/polkit-1/
+/usr/share/polkit-1/
+
+# FIXME: remove gvfs when pcmanfm in ppa will be updated
+# gvfs
+/usr/share/gvfs/
+/usr/lib/gvfs/
+# still something is wrong with consolekit - need to launch openbox using ck-launch-session (dbus too?)
+/usr/lib/ConsoleKit/
+/etc/ConsoleKit/
+/etc/logrotate.d/consolekit
+/usr/bin/ck-history
+/usr/bin/ck-launch-session
+/usr/bin/ck-list-sessions
+/usr/sbin/ck-log-system-restart
+/usr/sbin/ck-log-system-start
+/usr/sbin/ck-log-system-stop
+/usr/sbin/console-kit-daemon
+
+[config]
+
+[overwrite]

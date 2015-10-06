@@ -1,0 +1,33 @@
+#!/bin/bash
+
+if [ -e $1 ]; then
+
+	[ x"$HOST_DIR" = x ] && export HOST_DIR="/host"
+	APP_PACKAGE_PATH=$HOST_DIR/apps
+	APP_TEMP_INSTALL_DIR=/opt
+	APP_INSTALL_DIR=/apps
+
+	APP_NAME=`basename $1 .app`
+	APP_NAME_SUFFIX=$APP_NAME.d
+	# check if we have free loop device available
+	LOOPS_USED=`losetup | wc -l`
+	LOOPS_NUM=`ls -al /dev/loop[0-9]* | wc -l`
+	if [ $LOOPS_USED -ge $LOOPS_NUM ]; then
+		# create new loop device
+		mknod -m660 /dev/loop$LOOPS_NUM b 7 $LOOPS_NUM
+	fi
+	
+	# inst *.app file to /opt
+	OPT_TARGET="$APP_TEMP_INSTALL_DIR/$APP_NAME_SUFFIX"
+	[ -d $OPT_TARGET ] || mkdir -p $OPT_TARGET
+	mount -o loop $1 $OPT_TARGET 
+	
+	# merge app file to /apps
+	[ -d $HOST_DIR/data/apps/$APP_NAME ] || mkdir -p $HOST_DIR/data/apps/$APP_NAME
+	[ -d $APP_INSTALL_DIR/$APP_NAME ] || mkdir -p $APP_INSTALL_DIR/$APP_NAME
+	mount -t aufs -o br=$HOST_DIR/data/apps/$APP_NAME/=rw:$OPT_TARGET=ro none $APP_INSTALL_DIR/$APP_NAME
+	# execute install.sh if exist
+	if [ -e $APP_INSTALL_DIR/$APP_NAME/install.sh ]; then 
+		exec $APP_INSTALL_DIR/$APP_NAME/install.sh
+	fi
+fi

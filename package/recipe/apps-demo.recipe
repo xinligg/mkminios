@@ -1,0 +1,18 @@
+# recipe file
+
+[name]
+leafpad
+
+[package]
+leafpad
+
+[action]
+
+[binary]
+
+[data]
+
+[config]
+
+[overwrite]
+

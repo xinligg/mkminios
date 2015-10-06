@@ -1,0 +1,8 @@
+#!/usr/bin/env perl
+
+for (split /,/, (split /functions:/, `$ENV{'MKMINIOS_TARGET'}/bin/busybox --help` )[1]) {
+
+s/\s*//;
+system "ln -s /bin/busybox $ENV{'MKMINIOS_TARGET'}/bin/$_" if ! /^(busybox|modprobe|cpio|mount|sh|find)/;
+
+}

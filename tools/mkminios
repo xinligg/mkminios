@@ -1,0 +1,59 @@
+#!/bin/bash
+# mkminios - binary level image build system 
+# Copyright (c) 2011 by Xin Li
+
+export LC_ALL=C
+[ -f tools/function.sh ] && . tools/function.sh 
+
+if [ -z $1 ]; then
+	usage
+else
+
+	if [ ! -z $2 ] && [ -f "config/$2.cookbook" ]; then export MKMINIOS_CODENAME=$2
+	else export MKMINIOS_CODENAME='default'; fi
+	export MKMINIOS_CONFIG=config/$MKMINIOS_CODENAME.cookbook
+	eval export `./tools/parser $MKMINIOS_CONFIG config`
+	
+	case $1 in
+		all)
+			clean
+			setup $MKMINIOS_CODENAME	
+			echo "[mkminios] Project Name: $MKMINIOS_NAME"
+			
+			## FIXME: merge init, strip and opt function
+			install && init && strip 
+			opt
+			kernel $MKMINIOS_CODENAME
+			post
+			sqf_image $MKMINIOS_CODENAME
+#			image $MKMINIOS_CODENAME
+			echo "[mkminios] $MKMINIOS_CODENAME Done"
+			notify-send "minios is finished"
+			;;
+		clean)
+			clean
+			;;
+		image)
+			image $MKMINIOS_CODENAME
+			;;
+		sqf_image)
+			sqf_image $MKMINIOS_CODENAME
+			;;
+		test)
+			sudo kvm -kernel $MKMINIOS_KERNEL_IMAGE -initrd deploy/$MKMINIOS_CODENAME.cpio -hda /dev/zero -m 512 -net nic,model=ne2k_pci -net user
+			;;
+		help|usage)
+			usage
+			;;
+		mkopt)
+			# create opt using recipe: mkminios mkopt {recipe name} {cookbook name}
+			# Attention! cookbook must be built first, before making opts, so all dependencies could be checked correctly
+			# create opt from directory: mkminios mkopt {directory}
+			makeopt $2 $3
+			;;
+		*)
+			echo "[mkminios] $1: not yet implemented"
+			;;
+	esac 
+fi
+

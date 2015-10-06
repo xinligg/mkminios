@@ -1,0 +1,39 @@
+#!/bin/sh
+export PATH="/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin:/usr/games"
+export HOME="/root"
+export LANG="zh_CN.UTF-8"
+export LANGUAGE="zh_CN.UTF-8"
+
+#echo "now mount tmpfs"
+/bin/mount -t tmpfs none /var/run -o nosuid
+/bin/mount -t tmpfs none /var/lock -o noexec,nosuid,nodev
+/bin/mount -t sysfs sys /sys
+/bin/mount -t proc proc /proc
+/bin/mount -t devtmpfs devtmpfs /dev
+/bin/mount -t devpts devpts /dev/pts
+ln -sf /proc/mounts /etc/mtab
+#echo "now set hostname"
+
+hostname -F /etc/hostname
+
+#echo "now loadkmap"
+# keymap
+loadkmap < /usr/share/keymap/us.kmap
+
+#echo "now to start udev"
+#udev to create device
+/sbin/udevd --daemon 
+/sbin/udevadm trigger
+/usr/local/bin/pre-boot.sh
+/sbin/udevadm settle
+#mdev -s
+/bin/sync
+/bin/sync
+/bin/sync
+
+#sleep 3	
+#echo "now startx"
+# start X server
+startx &
+
+/bin/sh

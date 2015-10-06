@@ -1,0 +1,19 @@
+# recipe file
+
+[name]
+
+
+[package]
+
+
+[action]
+
+[binary]
+/usr/bin/Xfbdev
+
+[data]
+
+[config]
+
+[overwrite]
+

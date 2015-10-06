@@ -1,0 +1,16 @@
+# recipe file
+
+[name]
+xvesa
+
+[package]
+
+[binary]
+
+[data]
+
+[config]
+
+[overwrite]
+
+/usr/bin/Xvesa

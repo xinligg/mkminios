@@ -1,0 +1,131 @@
+# Automatically generated file. Do not edit (see /usr/share/doc/menu/html/index.html)
+
+   [submenu] (帮助) {}
+      [exec] (Info) { x-terminal-emulator -T "Info" -e info} <>
+      [exec] (Xman) {xman} <>
+   [end]
+   [submenu] (窗口管理器) {}
+      [restart] (FluxBox)  {/usr/bin/startfluxbox}
+      [restart] (Openbox)  {/usr/bin/openbox}
+   [end]
+   [submenu] (应用程序) {}
+      [submenu] (Shell) {}
+         [exec] (Bash) { x-terminal-emulator -T "Bash" -e /bin/bash --login} <>
+         [exec] (Dash) { x-terminal-emulator -T "Dash" -e /bin/dash -i} <>
+         [exec] (Sh) { x-terminal-emulator -T "Sh" -e /bin/sh --login} <>
+      [end]
+      [submenu] (办公) {}
+         [exec] (AbiWord Word Processor) {/usr/bin/abiword} </usr/share/pixmaps/abiword.xpm>
+         [exec] (gnumeric) {/usr/bin/gnumeric} </usr/share/pixmaps/gnome-gnumeric.xpm>
+      [end]
+      [submenu] (编程) {}
+         [exec] (Python (v2.7\)) { x-terminal-emulator -T "Python (v2.7)" -e /usr/bin/python2.7} </usr/share/pixmaps/python2.7.xpm>
+         [exec] (Python (v3.4\)) { x-terminal-emulator -T "Python (v3.4)" -e /usr/bin/python3.4} </usr/share/pixmaps/python3.4.xpm>
+      [end]
+      [submenu] (编辑器) {}
+         [exec] (LeafPad) {/usr/bin/leafpad} </usr/share/pixmaps/leafpad.xpm>
+         [exec] (Nano) { x-terminal-emulator -T "Nano" -e /bin/nano} </usr/share/nano/nano-menu.xpm>
+         [exec] (Xedit) {xedit} <>
+         [exec] (xpad) {/usr/bin/xpad} <xpad.xpm>
+      [end]
+      [submenu] (查看器) {}
+         [exec] (Evince) {/usr/bin/evince} </usr/share/pixmaps/evince.xpm>
+         [exec] (Xditview) {xditview} <>
+      [end]
+      [submenu] (辅助工具) {}
+         [exec] (Xmag) {xmag} <>
+      [end]
+      [submenu] (科学) {}
+         [submenu] (数学) {}
+            [exec] (Bc) { x-terminal-emulator -T "Bc" -e /usr/bin/bc} <>
+            [exec] (galculator) {/usr/bin/galculator} </usr/share/pixmaps/galculator.xpm>
+            [exec] (Xcalc) {xcalc} <>
+         [end]
+      [end]
+      [submenu] (声音) {}
+         [exec] (Audacious) {/usr/bin/audacious} <>
+      [end]
+      [submenu] (视频) {}
+         [exec] (GNOME MPlayer) {gnome-mplayer} </usr/share/pixmaps/gnome-mplayer.xpm>
+         [exec] (guvcview) {/usr/bin/guvcview} <>
+      [end]
+      [submenu] (图形) {}
+         [exec] (mtPaint) {/usr/bin/mtpaint} <>
+         [exec] (X Window Snapshot) {xwd | xwud} <>
+      [end]
+      [submenu] (网络) {}
+         [submenu] (通信) {}
+            [exec] (Pidgin) {/usr/bin/pidgin} </usr/share/pixmaps/pidgin-menu.xpm>
+            [exec] (Sylpheed) {/usr/bin/sylpheed} </usr/share/pixmaps/sylpheed-debian.xpm>
+            [exec] (Telnet) { x-terminal-emulator -T "Telnet" -e /usr/bin/telnet} <>
+            [exec] (Xbiff) {xbiff} <>
+         [end]
+         [submenu] (文件传输) {}
+            [exec] (Transmission BitTorrent Client (GTK\)) {/usr/bin/transmission-gtk} </usr/share/pixmaps/transmission.xpm>
+         [end]
+      [end]
+      [submenu] (文本) {}
+         [exec] (Character map) {/usr/bin/gucharmap} <>
+      [end]
+      [submenu] (文件管理) {}
+         [exec] (File-Roller) {/usr/bin/file-roller} </usr/share/pixmaps/file-roller.xpm>
+         [exec] (PCManFM) {/usr/bin/pcmanfm} <>
+      [end]
+      [submenu] (系统) {}
+         [submenu] (安全) {}
+            [exec] (light-locker-settings) {light-locker-settings} <>
+         [end]
+         [submenu] (管理) {}
+            [exec] (DSL/PPPoE configuration tool) { x-terminal-emulator -T "DSL/PPPoE configuration tool" -e /usr/sbin/pppoeconf} </usr/share/pixmaps/pppoeconf.xpm>
+            [exec] (Editres) {editres} <>
+            [exec] (GNOME partition editor) {su-to-root -X -c /usr/sbin/gparted} </usr/share/pixmaps/gparted.xpm>
+            [exec] (LXAppearance) {/usr/bin/lxappearance} <>
+            [exec] (Network Admin) {/usr/bin/network-admin} </usr/share/gnome-system-tools/pixmaps/network.xpm>
+            [exec] (Openbox Configuration Manager) {/usr/bin/obconf} </usr/share/pixmaps/obconf.xpm>
+            [exec] (pppconfig) { x-terminal-emulator -T "pppconfig" -e su-to-root -p root -c /usr/sbin/pppconfig} <>
+            [exec] (Services Admin) {/usr/bin/services-admin} </usr/share/gnome-system-tools/pixmaps/services.xpm>
+            [exec] (Shares Admin) {/usr/bin/shares-admin} </usr/share/gnome-system-tools/pixmaps/shares.xpm>
+            [exec] (System Information) {/usr/bin/hardinfo} </usr/share/pixmaps/hardinfo.xpm>
+            [exec] (Time Admin) {/usr/bin/time-admin} </usr/share/gnome-system-tools/pixmaps/time.xpm>
+            [exec] (Ubiquity Installer) {/usr/bin/ubiquity} </usr/share/pixmaps/ubiquity.xpm>
+            [exec] (User accounts Admin) {/usr/bin/users-admin} </usr/share/gnome-system-tools/pixmaps/users.xpm>
+            [exec] (Xclipboard) {xclipboard} <>
+            [exec] (Xfontsel) {xfontsel} <>
+            [exec] (Xkill) {xkill} <>
+            [exec] (Xrefresh) {xrefresh} <>
+         [end]
+         [submenu] (软件包管理) {}
+            [exec] (Synaptic Package Manager) {x-terminal-emulator -e synaptic-pkexec} </usr/share/synaptic/pixmaps/synaptic_32x32.xpm>
+         [end]
+         [submenu] (系统监控) {}
+            [exec] (LXRandR) {/usr/bin/lxrandr} <>
+            [exec] (LXTask) {/usr/bin/lxtask} <>
+            [exec] (Pstree) { x-terminal-emulator -T "Pstree" -e /usr/bin/pstree.x11} </usr/share/pixmaps/pstree16.xpm>
+            [exec] (Top) { x-terminal-emulator -T "Top" -e /usr/bin/top} <>
+            [exec] (Xconsole) {xconsole -file /dev/xconsole} <>
+            [exec] (Xev) {x-terminal-emulator -e xev} <>
+            [exec] (Xload) {xload} <>
+         [end]
+         [submenu] (硬件) {}
+            [exec] (Xvidtune) {xvidtune} <>
+         [end]
+         [submenu] (语言环境) {}
+            [exec] (Input Method Configuration) { x-terminal-emulator -T "Input Method Configuration" -e /usr/bin/im-config} <>
+         [end]
+      [end]
+      [submenu] (终端) {}
+         [exec] (LXTerminal) {/usr/bin/lxterminal} </usr/share/pixmaps/lxterminal.xpm>
+         [exec] (XTerm) {xterm} </usr/share/pixmaps/xterm-color_32x32.xpm>
+         [exec] (X-Terminal as root (GKsu\)) {/usr/bin/gksu -u root /usr/bin/x-terminal-emulator} </usr/share/pixmaps/gksu-debian.xpm>
+         [exec] (XTerm (Unicode\)) {uxterm} </usr/share/pixmaps/xterm-color_32x32.xpm>
+      [end]
+   [end]
+   [submenu] (游戏) {}
+      [submenu] (玩具类) {}
+         [exec] (Oclock) {oclock} <>
+         [exec] (Xclock (analog\)) {xclock -analog} <>
+         [exec] (Xclock (digital\)) {xclock -digital -update 1} <>
+         [exec] (Xeyes) {xeyes} <>
+         [exec] (Xlogo) {xlogo} <>
+      [end]
+   [end]

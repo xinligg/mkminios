@@ -1,0 +1,35 @@
+# recipe file
+
+[name]
+xbmc
+
+[package]
+#xbmc
+python2.6
+
+[action]
+
+# fixme: use more general way to add 3rd-party repository 
+if ! grep -q 'deb http://ppa.launchpad.net/team-xbmc/ppa/ubuntu karmic main' /etc/apt/sources.list; then 
+echo 'deb http://ppa.launchpad.net/team-xbmc/ppa/ubuntu karmic main' >> /etc/apt/sources.list; apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 91E7EE5E; apt-get update; apt-get install xbmc --yes --force-yes; else apt-get install xbmc --yes --force-yes; fi 
+
+[binary]
+
+/usr/bin/python
+/usr/bin/python2.6
+/usr/bin/glxinfo
+/usr/bin/xdpyinfo
+/usr/bin/xbmc
+/usr/lib/xbmc/xbmc.bin
+
+[data]
+
+/usr/share/xbmc
+/usr/lib/xbmc
+/usr/lib/python2.6
+/usr/lib/gconv
+
+[config]
+
+[overwrite]
+

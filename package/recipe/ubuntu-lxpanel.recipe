@@ -1,0 +1,52 @@
+# recipe file
+
+[name]
+lxpanel
+
+[package]
+lxpanel
+
+[action]
+
+[binary]
+
+/usr/bin/lxpanel
+/usr/bin/lxpanelctl
+
+[data]
+
+/usr/lib/lxpanel/plugins/batt.so
+/usr/lib/lxpanel/plugins/cpu.so
+/usr/lib/lxpanel/plugins/cpufreq.so
+/usr/lib/lxpanel/plugins/deskno.so
+/usr/lib/lxpanel/plugins/kbled.so
+/usr/lib/lxpanel/plugins/netstatus.so
+/usr/lib/lxpanel/plugins/thermal.so
+/usr/lib/lxpanel/plugins/volumealsa.so
+/usr/lib/lxpanel/plugins/xkb.so
+
+/usr/share/lxpanel/images
+/usr/share/lxpanel/ui
+/usr/share/lxpanel/profile/default
+
+#FIXME it's for pixbuf loader module
+/usr/lib/gdk-pixbuf-2.0/2.10.0/loaders
+/usr/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache
+
+#for plugin
+/usr/share/howtododialog
+/usr/bin/eldy_poweroff
+#/usr/bin/elderpc_app
+#/usr/share/pixmaps/staros-shutdown.png
+#/usr/share/pixmaps/switch.png
+
+[config]
+#/usr/share/applications/switchmode.desktop
+/usr/share/applications/gnome-shutdown.desktop
+
+[overwrite]
+#/usr/bin/lxpanel
+/root/.config/lxpanel/default
+
+#for locale
+/usr/share/locale/zh_CN/LC_MESSAGES/lxpanel.mo

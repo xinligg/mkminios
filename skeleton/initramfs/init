@@ -1,0 +1,193 @@
+#!/bin/busybox sh
+
+#argument:
+#SRC  查找system.img以及host在磁盘上的目录
+#ROOT host的磁盘dev，比如/dev/sda1
+#MEDIA 系统启动方式 有cd/flash/harddisk/pxe
+error()
+{
+        echo $*
+        return 1
+}
+
+try_mount()
+{
+        RW=$1; shift
+        # FIXME: any way to mount ntfs gracefully?
+        mount -o $RW $@ || mount.ntfs-3g -o rw,force $@
+}
+
+check_root()
+{
+#        try_mount ro $1 /mnt && [ -e /mnt/$SRC/ramdisk.img ]
+#        [ $? -ne 0 ] && return 1
+#        zcat /mnt/$SRC/ramdisk.img | cpio -id > /dev/null
+        try_mount ro $1 /mnt || return 1
+        if [ -e /mnt/$SRC/system.sfs ]; then
+		mkdir /sqf_sfs
+                mount -o loop /mnt/$SRC/system.sfs /sqf_sfs
+                mount -o loop /sqf_sfs/system.img /sfs
+        elif [ -e /mnt/$SRC/system.img ]; then
+                mount -o loop /mnt/$SRC/system.img /sfs
+        elif [ -d /mnt/$SRC/system ]; then
+                remount_rw
+                mount --bind /mnt/$SRC/system /sfs
+        else
+#                rm -rf *
+                return 1
+        fi
+#        mkdir cache mnt mnt/sdcard
+#        mount -t tmpfs tmpfs cache
+        echo " found at $1"
+}
+
+remount_rw()
+{
+        mount -o remount,rw /mnt
+}
+
+overwrite_directory()
+{
+	if [ -d $1 && -d $2 ]; then
+		rm -rf $2
+		cp -a $1 $2
+	fi
+}
+
+restore_sys()
+{
+	rm -rf $1
+	rm -rf $2
+	cp -a /sfs/etc $1
+	cp -a /sfs/root $2
+}
+
+set_config()
+{
+	case $MEDIA in
+	cd)
+		echo "now to start cd mode"
+		;;
+	flash|usb)
+		echo "now to start flash mode"
+		remount_rw
+		[ -e /mnt/$SRC/data/etc/firstboot ] || restore_sys /mnt/$SRC/data/etc /mnt/$SRC/data/root
+		mount -o bind /mnt/$SRC/data/root /system/root
+		mount -o bind /mnt/$SRC/data/etc /system/etc
+		;;
+	pxe)
+		echo "now to start pxe mode"
+		;;
+	harddisk|*)
+		echo "now to start harddisk mode"
+		remount_rw
+		[ -e /mnt/$SRC/data/etc/firstboot ] || restore_sys /mnt/$SRC/data/etc /mnt/$SRC/data/root
+		mount -o bind /mnt/$SRC/data/root /system/root
+		mount -o bind /mnt/$SRC/data/etc /system/etc
+		;;
+	esac
+	mount -o bind /mnt/$SRC /system/host
+}
+#SRC=BOOT
+#ROOT=/dev/sda1
+LOG=/dev/null
+[ -e $LOG ] || busybox mknod $LOG c 1 3
+
+#exec 2> $LOG
+
+#/bin/sh
+[ -e /tmpfs ] || /bin/busybox mkdir /tmpfs
+[ -e /dev   ] || /bin/busybox mkdir /dev
+[ -e /sys   ] || /bin/busybox mkdir /sys
+[ -e /proc  ] || /bin/busybox mkdir /proc
+[ -e /system ] || /bin/busybox mkdir /system
+[ -e /sfs ] || /bin/busybox mkdir /sfs
+
+busybox mount -t proc proc /proc
+busybox mount -t devtmpfs devtmpfs /dev 
+#busybox mount -t tmpfs mdev /dev 
+busybox mount -t sysfs sys /sys
+
+busybox --install -s
+
+#echo /bin/mdev > /proc/sys/kernel/hotplug
+#export PATH=$PATH:/system/bin
+echo 0 0 0 0 > /proc/sys/kernel/printk
+
+#echo Mounting root file system...
+
+mdev -s
+
+#echo "src=$SRC"
+#echo "root=$ROOT"
+#/bin/busybox sh
+
+while [ 1 ]; do
+        for device in $ROOT /dev/sr* /dev/sd* /dev/cdrom; do
+		echo $device
+                check_root $device && break 2
+                mountpoint -q /mnt && umount /mnt
+        done
+        sleep 1
+        echo -n .
+done
+
+#while [ 1 ]; do
+##	if [ -e $ROOT ]; then
+##		try_mount rw $ROOT /mnt || continue
+##		if [  ! -e /mnt/$SRC/system.img ]; then
+##			umount /mnt
+##			continue
+##		fi
+##		mount -o loop /mnt/$SRC/system.img /sfs
+##		#echo " found at $device"
+##		harddisk=`basename $device`
+##		break
+##	fi
+#
+#	for device in /dev/sr* /dev/sd* /dev/hd* /dev/cdrom; do
+#		try_mount rw $device /mnt || continue
+#		cd /mnt/$SRC
+#		if [  ! -e system.img ]; then
+#			cd /
+#			umount /mnt
+#			continue
+#		fi
+#		mount -o loop /mnt/$SRC/system.img /sfs
+#		#echo " found at $device"
+#		harddisk=`basename $device`
+#		break
+#	done
+#	mountpoint -q /sfs && break
+#	sleep 1
+#	echo -n .
+#done
+
+#remount_rw
+#echo "mount aufs /system"
+#mount -o rw $SRC /system
+mount -t tmpfs tmpfs /tmpfs
+#mount -t aufs -o br:/tmpfs:/sfs none /system
+#mount -t aufs -o br:/mnt/$SRC/root:/sfs/root none /system/root
+#mount -t aufs -o br:/mnt/$SRC/etc:/sfs/etc none /system/etc
+mount -t aufs -o br=/tmpfs=rw:/sfs=ro none /system
+#mount -t aufs -o br=/mnt/$SRC/root=rw:/sfs/root=ro none /system/root
+#mount -t aufs -o br=/mnt/$SRC/etc=rw:/sfs/etc=ro none /system/etc
+#mount --move /sys /system/sys
+#mount --move /proc /system/proc
+[ -e /system/host ] || mkdir -p /system/host
+
+set_config
+
+#[ -e /mnt/$SRC/data/etc/firstboot ] || restore_sys /mnt/$SRC/data/etc /mnt/$SRC/data/root
+#mount -o bind /mnt/$SRC /system/host
+#mount -o bind /mnt/$SRC/data/root /system/root
+#mount -o bind /mnt/$SRC/data/etc /system/etc
+
+#echo "harddisk=$harddisk"
+#mkdir -p /system/media/$harddisk
+#mount --move /mnt /system/media/$harddisk
+#echo "run rootfs init"
+exec switch_root /system /sbin/init
+
+sh # avoid kernel panic

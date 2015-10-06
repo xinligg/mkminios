@@ -1,0 +1,41 @@
+# recipe file
+
+[name]
+initramfs
+
+#---------------------------
+
+[package]
+#mount
+
+#---------------------------
+
+[action]
+
+#sudo tar zxf skeleton/archive/dev.tgz -C working/$MKMINIOS_CODENAME/initramfs/
+
+#---------------------------
+
+[binary]
+
+#/bin/mount
+#/bin/umount
+#/sbin/swapon
+#/sbin/losetup
+#/sbin/swapoff
+
+#FIXME:for get harddisk device
+/usr/bin/basename
+#---------------------------
+
+[data]
+#/lib/firmware
+#---------------------------
+
+[config]
+
+#---------------------------
+
+[overwrite]
+
+#/bin/busybox

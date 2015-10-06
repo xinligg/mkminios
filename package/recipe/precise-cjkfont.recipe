@@ -1,0 +1,19 @@
+# recipe file
+
+[name]
+font
+
+[package]
+fonts-droid
+
+[binary]
+
+[data]
+
+/usr/share/fonts/truetype/droid/DroidSansFallback.ttf
+/usr/share/fonts/truetype/droid/DroidSansJapanese.ttf
+
+[config]
+
+[overwrite]
+

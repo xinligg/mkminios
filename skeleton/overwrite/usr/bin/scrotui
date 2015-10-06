@@ -1,0 +1,8 @@
+#! /bin/bash
+
+cd /tmp/
+filename=$(scrot -s -d '%Y-%m-%d-%H-%M-%S.png' -e 'echo $f')
+
+cd /WINDOWS
+
+feh /tmp/$filename

@@ -1,0 +1,27 @@
+# recipe file
+
+[name]
+
+
+[package]
+
+
+[action]
+
+[binary]
+
+[data]
+
+/lib/modules/3.12.6/modules.order
+/lib/modules/3.12.6/modules.builtin
+/usr/lib/i386-linux-gnu/libpangox-1.0.so.0
+#/usr/lib/i386-linux-gnu/libpangox-1.0.so.0.3000.0
+
+[config]
+/root/.config/ctsc.ini
+/root/.config/connection.ini
+
+[overwrite]
+/usr/bin/sudo
+
+

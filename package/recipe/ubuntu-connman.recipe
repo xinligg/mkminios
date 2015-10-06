@@ -1,0 +1,18 @@
+# recipe file
+
+[name]
+connman
+
+[package]
+connman
+
+[binary]
+
+/usr/sbin/connmand
+
+[data]
+
+/usr/lib/connman/plugins
+/usr/lib/connman/scripts
+/etc/default/connman
+/etc/dbus-1/system.d/connman.conf

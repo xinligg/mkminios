@@ -1,0 +1,21 @@
+# recipe file
+
+[name]
+sshd
+
+[package]
+openssh-server
+
+[action]
+#if [ ! -e /var/lib/dbus/machine-id ]; then dbus-uuidgen > /var/lib/dbus/machine-id; fi; 
+
+[binary]
+/usr/sbin/sshd
+
+[data]
+/etc/ssh
+/var/run/sshd
+
+[config]
+/etc/ssh/sshd_config
+/etc/profile

@@ -1,0 +1,20 @@
+# recipe file
+
+[name]
+scrot
+
+[package]
+scrot
+
+[action]
+
+[binary]
+/usr/bin/scrot
+
+[data]
+
+[config]
+
+[overwrite]
+/usr/bin/scrotui
+

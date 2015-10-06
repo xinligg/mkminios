@@ -1,0 +1,36 @@
+# recipe file
+
+[name]
+media
+
+[package]
+gnome-mplayer
+
+[action]
+
+[binary]
+
+/usr/bin/gnome-mplayer
+/usr/bin/mplayer
+
+[data]
+
+# /usr/share/mplayer/subfont.ttf
+/usr/share/applications/gnome-mplayer.desktop
+
+## FIXME
+/usr/share/icons/gnome/22x22/status/audio-volume-high.png
+
+#for locale
+/usr/share/locale/zh_CN/LC_MESSAGES/gnome-mplayer.mo
+
+[config]
+
+#/root/.mplayer
+
+[overwrite]
+
+/usr/lib/mozilla/plugins/libflashplayer.so
+
+#for locale
+#/usr/share/locale/zh_CN/LC_MESSAGES/gnome-mplayer.mo

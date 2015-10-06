@@ -1,0 +1,24 @@
+# recipe file
+
+[name]
+lxappearance
+
+[package]
+lxappearance
+
+[action]
+
+[binary]
+/usr/bin/lxappearance
+
+[data]
+#/usr/share/applications/lxappearance.desktop
+#/usr/share/menu/lxappearance
+/usr/share/lxappearance/ui/about.ui
+/usr/share/lxappearance/ui/lxappearance.ui
+/usr/share/locale/zh_CN/LC_MESSAGES/lxappearance.mo
+
+[config]
+
+[overwrite]
+

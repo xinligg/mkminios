@@ -1,0 +1,16 @@
+#!/bin/bash
+# set_locale <lang> [keymap]
+
+UILANG=$1
+KEYMAP=$2
+
+#/bin/killall Xvesa
+
+# plate locale
+#echo "pref(\"xpud.locale\", \""$UILANG"\");" >> /usr/share/plate/defaults/preferences/prefs.js
+
+# keymap
+setxkbmap -layout $KEYMAP
+
+#sleep 0.1
+#/bin/startx &

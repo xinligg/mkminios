@@ -1,0 +1,104 @@
+#!/bin/bash
+# script generates exec.html applications menu template
+# from .desktop files in /usr/share/applications
+
+## FIXME: should use Categories for different tables
+
+# table headers
+app_table="<h2><span class='i18n'>application</span></h2>
+<table class='soft_background orange'>
+<tr>"
+web_table="<h2><span class='i18n'>web_app</span></h2>
+<table class='soft_background green'>
+<tr>"
+
+# <tr> counter 
+app_counter="0"
+web_counter="0"
+
+# for all *.desktop files in "applications" directory do
+list=`find /usr/share/applications -name '*.desktop'`
+for i in $list; do
+
+	# create entry in exec.html template
+	app_filename=`basename $i .desktop`
+	app_command=`grep Exec= $i | cut -d '=' -f 2`
+	app_url=`grep URL= $i | cut -d '=' -f 2`
+	# get application generic name
+	app_name=`grep GenericName= $i | cut -d '=' -f 2`
+	if [ -z "$app_name" ]; then
+		app_name=`grep Comment= $i | cut -d '=' -f 2`
+	fi
+	# get application icon
+	app_icon=`grep Icon= $i | cut -d '=' -f 2`
+	# generate icon path
+	icon_file="/usr/share/pixmaps/"$app_icon".png"
+	# application type
+	app_type=`grep ^Type= $i | cut -d '=' -f 2`
+	
+	# find icon and set img src
+	if [ -e $icon_file ]; then
+		if [ $app_type == "WebApp" ]; then
+		img_src="<img src='http://localhost/"$icon_file"' style='max-width:64px' onload=\"resume_notify(this,'"$app_name"');\" />"
+		else
+		img_src="<img src='http://localhost/"$icon_file"' style='max-width:64px' onload=\"resume_notify(this,'"$app_name"');\" />"
+		
+		fi
+	else
+		img_src="<img src='image/"$app_name".png' onload=\"resume_notify(this,'"$app_name"');\" />"	
+	fi
+
+	# set description and application name 
+	if [ $app_type == "WebApp" ]; then
+	desc_line="<div class='notify_hide'><div></div></div>
+</td><td>
+<strong><span class='i18n'>$app_name</span></strong><br />
+$app_url
+</td></tr></table></a></td>"
+	else 
+
+	desc_line="<div class='notify_hide'><div></div></div>
+</td><td>
+<strong><span class='i18n'>$app_name</span></strong><br />
+$app_filename
+</td></tr></table></a></td>"
+	fi
+
+	# generate the table contents based on app_type
+
+	case $app_type in
+		"WebApp")
+			web_table=$web_table"<td><a href='#' onclick=\"show_program('$app_name','$app_command');\" onfocus = 'this.blur()'>
+<table><tr><td class='image'>
+$img_src
+$desc_line"
+
+			if [ $web_counter -eq "2" ]; then
+				web_table=$web_table"</tr><tr>"
+				web_counter="0"
+			else
+				web_counter=`echo $web_counter + 1 | bc`
+			fi	
+		;;
+		"Application")
+			app_table=$app_table"<td><a href='#' onclick=\"show_program('$app_name','$app_command');\" onfocus = 'this.blur()'>
+<table><tr><td class='image'>
+$img_src
+$desc_line"
+
+			if [ $app_counter -eq "2" ]; then
+				app_table=$app_table"</tr><tr>"
+				app_counter="0"
+			else
+				app_counter=`echo $app_counter + 1 | bc`
+			fi
+		;;
+	esac
+
+done
+
+app_table=$app_table"</tr></table>"
+web_table=$web_table"</tr></table>"
+
+echo $app_table > /usr/share/plate/chrome/content/template/exec.html
+echo $web_table >> /usr/share/plate/chrome/content/template/exec.html

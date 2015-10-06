@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Name=Shutdown
+Name[zh_CN]=关机
+Comment[zh_CN]= 关闭计算机
+Exec=/usr/sbin/myshutdown.py
+Terminal=false
+Type=Application
+Categories=GNOME;GTK;Utility;
+Icon=stock_exit
+StartupNotify=false
+OnlyShowIn=GNOME;

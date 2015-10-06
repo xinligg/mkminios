@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=SwitchMode
+Name[zh_CN]=在老人电脑模式和普通模式间切换
+Exec=/usr/bin/elderpc_app
+Terminal=false
+Type=Application
+Categories=GTK;Utility;
+Icon=switch
+NoDisplay=true

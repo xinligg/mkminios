@@ -1,0 +1,83 @@
+#!/usr/bin/perl
+# NIC, EncType, Address, Password
+
+($nic, $enc, $addr, $pass) = ($ARGV[0], $ARGV[1], $ARGV[2], $ARGV[3]);
+#open(LOG, ">/tmp/wifi.cmd");
+open(PF, ">/etc/netwiz/$addr");
+
+system "touch /tmp/netstat.tmp";
+system "echo 1 > /tmp/netattempt";
+
+my $ssid = '"'.$1.'"' if `grep $addr /tmp/wifi.opt` =~ />"(.*)"</;
+
+# NONE 
+if ($enc eq 'wifi-none') {
+system "iwconfig $nic essid $ssid key off";
+print PF "iwconfig $nic essid $ssid key off\n";
+}
+
+# WEP
+if ($enc eq 'wifi-wep') {
+
+my $c = `echo $pass | wc -c`;
+
+if ($c == 6 || $c == 14) {
+my $passwd = $1 if $pass =~ /^"(.*)"$/;
+system qq{iwconfig $nic essid $ssid key restricted "s:$passwd"};
+print PF qq{iwconfig $nic essid $ssid key restricted "s:$passwd" \n};
+} else {
+system qq{iwconfig $nic essid $ssid key restricted $pass};
+print PF qq{iwconfig $nic essid $ssid key restricted $pass \n};
+}
+
+}
+
+# WPA
+if ($enc eq 'wifi-wpa') {
+
+system "wpa_passphrase $ssid $pass > /tmp/wifi.conf";
+system "wpa_supplicant -Dwext -i$nic -c/tmp/wifi.conf &";
+
+system "cp /tmp/wifi.conf /etc/netwiz/$addr.conf";
+print PF "wpa_supplicant -Dwext -i$nic -c/etc/netwiz/$addr.conf & \n";
+
+}
+
+# HIDDEN WPA
+if ($enc eq 'wifi-wpa-hidden') {
+my $ssid = $addr;
+system "wpa_passphrase $ssid $pass > /tmp/wifi.conf";
+system "sed '{/ssid/i\scan_ssid=1' /tmp/wifi.conf > /tmp/wifi.conf2";
+system "iwconfig $nic essid $ssid";
+system "wpa_supplicant -Dwext -i$nic -c/tmp/wifi.conf2 &";
+
+system "cp /tmp/wifi.conf2 /etc/netwiz/$addr.conf";
+print PF "wpa_supplicant -Dwext -i$nic -c/etc/netwiz/$addr.conf & \n";
+
+}
+
+# HIDDEN
+if ($enc eq 'wifi-hidden') {
+
+system "ifconfig $nic down";
+system "iwconfig $nic ap $addr key $pass";
+system "ifconfig $nic up";
+system "iwconfig $nic mode Managed";
+
+print PF "ifconfig $nic down\n
+iwconfig $nic ap $addr key $pass\n
+ifconfig $nic up\n
+iwconfig $nic mode Managed \n";
+
+}
+
+system "udhcpc -i $nic";
+print PF "udhcpc -i $nic \n";
+
+if ( ! `ifconfig|grep "inet addr"`) { system "udhcpc -i  $nic; rm -f /tmp/netstat.tmp"; } 
+else { system "rm -f /tmp/netstat.tmp"; }
+
+# show wifi connected notification message
+$iw = `iwconfig`;
+$ssid = $1 if $iw =~ /ESSID:"(.*?)"/;
+system "notify-send '$ssid' 'Connection established' -i /usr/share/plate/chrome/content/image/wlassistant.png -u critical"
