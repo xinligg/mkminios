@@ -35,25 +35,11 @@ function setup {
 	tar zxf skeleton/rootfs.tgz -C working/${MKMINIOS_CODENAME}/
 	export MKMINIOS_TARGET=working/${MKMINIOS_CODENAME}/rootfs
 
-	# copy /dev nodes
-	if [ "${MKMINIOS_HOST_DEV}" == 'true' ]; then
-		tar zcf skeleton/archive/dev-host.tgz /dev/*
-		tar zxf skeleton/archive/dev-host.tgz -C ${MKMINIOS_TARGET}/
-	else 
-		tar zxf skeleton/archive/dev.tgz -C ${MKMINIOS_TARGET}/
-	fi
-	
-	# untar default kernel modules if exists
-	if [ -e kernel/module/default-module-${MKMINIOS_KERNEL}.tgz ]; then
-		tar zxf kernel/module/default-module-${MKMINIOS_KERNEL}.tgz -C ${MKMINIOS_TARGET}/
-	fi
-
 	echo "[mkminios] Project Target: ${MKMINIOS_TARGET}"
 	
 	echo "[mkminios] Executing pre-build scripts:"
 	eval `./tools/parser ${MKMINIOS_CONFIG} prepare`
 
-	find working -name .svn | xargs rm -rf
 }
 
 function install {
@@ -280,11 +266,11 @@ function sqf_image {
 	export MKMINIOS_TARGET=working/${MKMINIOS_CODENAME}/rootfs
 
 	# temporary hook for squashfs version 
-#	if [ `mksquashfs -version | grep '0.4'` ]; then 
 	if [ -e /usr/bin/mksquashfs ]; then 
-		MKSQF="/usr/bin/mksquashfs" 
+		MKSQF="mksquashfs" 
 	else 
-		MKSQF="`pwd`/tools/mksquashfs"	
+		echo "Error - not found mksquashfs."
+		exit;
 	fi
 		
 	# enable multi-layered rootfs support for Opts 
@@ -364,10 +350,11 @@ function image {
 	export MKMINIOS_TARGET=working/${MKMINIOS_CODENAME}/rootfs
 
 	# temporary hook for squashfs version 
-	if [ `mksquashfs -version | grep '0.4'` ]; then 
-		MKSQF="/usr/bin/mksquashfs" 
+	if [ -e /usr/bin/mksquashfs ]; then 
+		MKSQF="mksquashfs" 
 	else 
-		MKSQF="`pwd`/tools/mksquashfs"	
+		echo "Error - not found mksquashfs."
+		exit;
 	fi
 		
 	# enable multi-layered rootfs support for Opts 
@@ -489,10 +476,11 @@ function makeopt {
 		fi
 	fi
 	# temporary hook for squashfs version 
-	if [ `mksquashfs -version | grep '0.4'` ]; then 
-		MKSQF="/usr/bin/mksquashfs" 
+	if [ -e /usr/bin/mksquashfs ]; then 
+		MKSQF="mksquashfs" 
 	else 
-		MKSQF="`pwd`/tools/mksquashfs"	
+		echo "Error - not found mksquashfs."
+		exit;
 	fi
 	
 	mkdir -p deploy/opt/${MKMINIOS_CODENAME}

@@ -7,7 +7,7 @@ core-utils
 
 [package]
 #squashfs-tools
-aufs-tools
+#aufs-tools
 #genisoimage
 #upx-ucl
 wget 
@@ -161,15 +161,15 @@ pciutils
 
 [overwrite]
 
-/var/lib/os-prober
+#/var/lib/os-prober
 /bin/sh
 #/bin/busybox
 /usr/share/keymap
 
-/usr/local/bin/get_mod_list
-/usr/local/bin/boot-to-win
+#/usr/local/bin/get_mod_list
+#/usr/local/bin/boot-to-win
 
-/usr/share/grldr
+#/usr/share/grldr
 
 #/sbin/mount.aufs
 #/sbin/umount.aufs
