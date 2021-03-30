@@ -1,13 +1,32 @@
 #!/bin/busybox sh
 
 #argument:
-#SRC  查找system.img以及host在磁盘上的目录
+#IMAGEDIR system.img在磁盘上的目录,比如rescue
+#SRC  查找host在磁盘上的目录
 #ROOT host的磁盘dev，比如/dev/sda1
 #MEDIA 系统启动方式 有cd/flash/harddisk/pxe
+[ -z $IMAGEFILE ] && IMAGEFILE=superredos-rescue.img
 error()
 {
         echo $*
         return 1
+}
+
+loadmod()
+{
+	modprobe squashfs
+	modprobe loop
+	modprobe vfat
+	modprobe overlay
+}
+
+mkdev()
+{
+	/lib/systemd/systemd-udevd -d
+	udevadm trigger
+	udevadm settle
+	udevadm control -e
+	loadmod
 }
 
 try_mount()
@@ -23,15 +42,16 @@ check_root()
 #        [ $? -ne 0 ] && return 1
 #        zcat /mnt/$SRC/ramdisk.img | cpio -id > /dev/null
         try_mount ro $1 /mnt || return 1
-        if [ -e /mnt/$SRC/system.sfs ]; then
+        if [ -e /mnt/$IMAGEDIR/system.sfs ]; then
 		mkdir /sqf_sfs
-                mount -o loop /mnt/$SRC/system.sfs /sqf_sfs
-                mount -o loop /sqf_sfs/system.img /sfs
-        elif [ -e /mnt/$SRC/system.img ]; then
-                mount -o loop /mnt/$SRC/system.img /sfs
-        elif [ -d /mnt/$SRC/system ]; then
+                mount -o loop /mnt/$IMAGEDIR/system.sfs /sqf_sfs
+                mount -o loop /sqf_sfs/$IMAGEFILE /sfs
+        elif [ -e /mnt/$IMAGEDIR/$IMAGEFILE ]; then
+		dd if=/mnt/$IMAGEDIR/$IMAGEFILE of=/$IMAGEFILE bs=4M
+                mount -o loop /$IMAGEFILE /sfs
+        elif [ -d /mnt/$IMAGEDIR/system ]; then
                 remount_rw
-                mount --bind /mnt/$SRC/system /sfs
+                mount --bind /mnt/$IMAGEDIR/system /sfs
         else
 #                rm -rf *
                 return 1
@@ -94,7 +114,6 @@ LOG=/dev/null
 [ -e $LOG ] || busybox mknod $LOG c 1 3
 
 #exec 2> $LOG
-
 #/bin/sh
 [ -e /tmpfs ] || /bin/busybox mkdir /tmpfs
 [ -e /dev   ] || /bin/busybox mkdir /dev
@@ -102,6 +121,7 @@ LOG=/dev/null
 [ -e /proc  ] || /bin/busybox mkdir /proc
 [ -e /system ] || /bin/busybox mkdir /system
 [ -e /sfs ] || /bin/busybox mkdir /sfs
+[ -e /mnt ] || /bin/busybox mkdir /mnt
 
 busybox mount -t proc proc /proc
 busybox mount -t devtmpfs devtmpfs /dev 
@@ -112,72 +132,42 @@ busybox --install -s
 
 #echo /bin/mdev > /proc/sys/kernel/hotplug
 #export PATH=$PATH:/system/bin
+export PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin
 echo 0 0 0 0 > /proc/sys/kernel/printk
 
 #echo Mounting root file system...
 
 mdev -s
+#mkdev
 
 #echo "src=$SRC"
 #echo "root=$ROOT"
 #/bin/busybox sh
 
-while [ 1 ]; do
-        for device in $ROOT /dev/sr* /dev/sd* /dev/cdrom; do
-		echo $device
-                check_root $device && break 2
-                mountpoint -q /mnt && umount /mnt
-        done
-        sleep 1
-        echo -n .
-done
+mount -o loop /opt/rootfs.sqf /sfs
 
 #while [ 1 ]; do
-##	if [ -e $ROOT ]; then
-##		try_mount rw $ROOT /mnt || continue
-##		if [  ! -e /mnt/$SRC/system.img ]; then
-##			umount /mnt
-##			continue
-##		fi
-##		mount -o loop /mnt/$SRC/system.img /sfs
-##		#echo " found at $device"
-##		harddisk=`basename $device`
-##		break
-##	fi
-#
-#	for device in /dev/sr* /dev/sd* /dev/hd* /dev/cdrom; do
-#		try_mount rw $device /mnt || continue
-#		cd /mnt/$SRC
-#		if [  ! -e system.img ]; then
-#			cd /
-#			umount /mnt
-#			continue
-#		fi
-#		mount -o loop /mnt/$SRC/system.img /sfs
-#		#echo " found at $device"
-#		harddisk=`basename $device`
-#		break
-#	done
-#	mountpoint -q /sfs && break
-#	sleep 1
-#	echo -n .
+#        for device in $ROOT /dev/sr* /dev/sd* /dev/nvme* /dev/vd* /dev/cdrom; do
+#		echo $device
+#                check_root $device && break 2
+#                mountpoint -q /mnt && umount /mnt
+#        done
+#        sleep 1
+#        echo -n .
 #done
+#umount /mnt
 
 #remount_rw
-#echo "mount aufs /system"
-#mount -o rw $SRC /system
-mount -t tmpfs tmpfs /tmpfs
-#mount -t aufs -o br:/tmpfs:/sfs none /system
-#mount -t aufs -o br:/mnt/$SRC/root:/sfs/root none /system/root
-#mount -t aufs -o br:/mnt/$SRC/etc:/sfs/etc none /system/etc
-mount -t aufs -o br=/tmpfs=rw:/sfs=ro none /system
-#mount -t aufs -o br=/mnt/$SRC/root=rw:/sfs/root=ro none /system/root
-#mount -t aufs -o br=/mnt/$SRC/etc=rw:/sfs/etc=ro none /system/etc
-#mount --move /sys /system/sys
-#mount --move /proc /system/proc
-[ -e /system/host ] || mkdir -p /system/host
+#echo "mount overlayfs /system"
 
-set_config
+mount -t tmpfs tmpfs /system
+cp -a /sfs/* /system
+
+#mount -t tmpfs tmpfs /tmpfs
+#mkdir /tmpfs/upperdir /tmpfs/workdir
+#mount -t overlay overlay -o lowerdir=/sfs,upperdir=/tmpfs/upperdir,workdir=/tmpfs/workdir /system
+
+#set_config
 
 #[ -e /mnt/$SRC/data/etc/firstboot ] || restore_sys /mnt/$SRC/data/etc /mnt/$SRC/data/root
 #mount -o bind /mnt/$SRC /system/host

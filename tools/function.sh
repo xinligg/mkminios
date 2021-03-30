@@ -29,7 +29,8 @@ function setup {
 	eval export `./tools/parser ${MKMINIOS_CONFIG} config`
 
 	# copy initramfs skeleton
-	cp -rfp --remove-destination skeleton/initramfs/ working/${MKMINIOS_CODENAME}/initramfs
+	tools/mkinitramfs -m working/${MKMINIOS_CODENAME}
+#	cp -rfp --remove-destination skeleton/initramfs/ working/${MKMINIOS_CODENAME}/initramfs
 
 	# untar rootfs skeleton
 	tar zxf skeleton/rootfs.tgz -C working/${MKMINIOS_CODENAME}/
@@ -385,6 +386,7 @@ function image {
 	done
 	
 	# create compressed rootfs to /opt/rootfs.sqf 
+	[ -d working/${MKMINIOS_CODENAME}/initramfs/opt ] || mkdir -p working/${MKMINIOS_CODENAME}/initramfs/opt
 	$MKSQF ${MKMINIOS_TARGET}/ working/${MKMINIOS_CODENAME}/initramfs/opt/rootfs.sqf -noappend 
 
 
@@ -404,8 +406,8 @@ function image {
 				cp -r skeleton/boot/iso/ deploy/${MKMINIOS_CODENAME}/
 				cp ${MKMINIOS_KERNEL_IMAGE} deploy/${MKMINIOS_CODENAME}/iso/boot/kernel
 				cp deploy/${MKMINIOS_CODENAME}/initrd.img deploy/${MKMINIOS_CODENAME}/iso/boot/initrd.img
-				cp deploy/${MKMINIOS_CODENAME}/system.img deploy/${MKMINIOS_CODENAME}/iso/boot/system.img
-				cp deploy/${MKMINIOS_CODENAME}/*.opt deploy/${MKMINIOS_CODENAME}/iso/boot/opt/
+#				cp deploy/${MKMINIOS_CODENAME}/system.img deploy/${MKMINIOS_CODENAME}/iso/boot/system.img
+#				cp deploy/${MKMINIOS_CODENAME}/*.opt deploy/${MKMINIOS_CODENAME}/iso/boot/opt/
 				mkisofs -R -l -V 'StarOS' -input-charset utf-8 -b isolinux.bin -c boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -o deploy/${MKMINIOS_CODENAME}.iso deploy/${MKMINIOS_CODENAME}/iso/
 				rm -rf deploy/${MKMINIOS_CODENAME}/iso/
 				./tools/isohybrid deploy/${MKMINIOS_CODENAME}.iso

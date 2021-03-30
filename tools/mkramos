@@ -25,8 +25,8 @@ else
 			opt
 			kernel $MKMINIOS_CODENAME
 			post
-			sqf_image $MKMINIOS_CODENAME
-#			image $MKMINIOS_CODENAME
+#			sqf_image $MKMINIOS_CODENAME
+			image $MKMINIOS_CODENAME
 			echo "[mkminios] $MKMINIOS_CODENAME Done"
 			notify-send "minios is finished"
 			;;

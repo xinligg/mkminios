@@ -18,6 +18,7 @@ initramfs
 
 [binary]
 
+/bin/busybox
 #/bin/mount
 #/bin/umount
 #/sbin/swapon
