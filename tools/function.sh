@@ -16,7 +16,7 @@ For further informations please refer to README file."
 }
 
 function clean {
-	rm -rf working/${MKMINIOS_CODENAME} deploy/${MKMINIOS_CODENAME}
+	rm -rf working/${MKMINIOS_CODENAME} deploy/${MKMINIOS_CODENAME} deploy/${MKMINIOS_CODENAME}.cpio deploy/${MKMINIOS_CODENAME}.iso
 }
 
 function setup {
